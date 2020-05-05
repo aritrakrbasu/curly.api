@@ -1,12 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');//log register
 const bodyParser = require('body-parser');//url body parse
-
+const router =express.Router();
 const app =express();
 
 
 
 const Article = require('./articles');
+const Updatedata = require('./updatedata');
 
 //CORS error handling
 
@@ -27,22 +28,26 @@ app.use(bodyParser.json());
 
 //All Routes
 app.use('/article', Article);
+app.use('/updatedata',Updatedata);
+app.use('/', router);
 
 
-
-    //error handling
-    app.use('/',(req,res,next) => {
-        const error= new Error('Not Found');
-        error.status=404;
+router.get('/:anything',(req,res,next) => {
+    const anything=req.params.anything;
+    const error= ({message:"Page Not Found",anything:anything,error_code:"404"});
         next(error);
-    });
-    
+
+
+});
     app.use((error,req,res,next)=>{
         res.status(error.status || 500);
-        res.json({
-            error:{
-                message: error.message
+        res.json({ 
+                Error_Code: error.error_code,
+                Url_requested:error.anything,
+                Error: error.message,
+               
+                
             }
-        });
+        );
     });
     module.exports = app ;
