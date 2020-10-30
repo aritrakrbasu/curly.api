@@ -1,7 +1,6 @@
 const express = require('express');
 const data = require('./curldetails');
 
-
 const router =express.Router();
 
 //Returns a random number between min (inclusive) and max (exclusive)
@@ -12,7 +11,6 @@ function between(min, max) {
     )
   }
 
-
 //request data without data limit - always show 1 data
 router.get('/',(req,res,next) => {
     const rand=between('0',(data.length-1));
@@ -21,7 +19,6 @@ router.get('/',(req,res,next) => {
         data:data.slice(rand,datalimit)
     })
 });
-
 
 //request data with limit - Max 50 for now
 router.get('/:limit',(req,res,next) => {
